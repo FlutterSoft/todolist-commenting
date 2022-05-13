@@ -1,31 +1,31 @@
-const express = require('express')
-const app = express()
-const MongoClient = require('mongodb').MongoClient
-const PORT = 2121
-require('dotenv').config()
+const express = require('express') //imports express framework
+const app = express() // sets variable app to be express so we can use express by simply typing app
+const MongoClient = require('mongodb').MongoClient // imports mongodb 
+const PORT = 2121 // sets port to a variable
+require('dotenv').config() // processes password key
 
-let db,
-    dbConnectionStr = process.env.DB_STRING,
-    dbName = 'todo'
+let db, // creates variable db
+    dbConnectionStr = process.env.DB_STRING, // creates variable database connection string to connect to the database needed
+    dbName = 'todo' // creates variable dbName (database name)
 
-MongoClient.connect(dbConnectionStr, {useUnifiedTopology: true})
+MongoClient.connect(dbConnectionStr, {useUnifiedTopology: true}) // connects to database in mongodb
     .then(client => {
-        console.log(`Hey, connected to ${dbName} database`)
-        db = client.db(dbName)
+        console.log(`Hey, connected to ${dbName} database`)  // logs a message when connected
+        db = client.db(dbName)  // sets db to be the database connected in previous step
     })
     .catch(err =>{
-        console.log(err)
+        console.log(err) // logs error if connection issue
     })
 
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.set('view engine', 'ejs') // sets express template language engine to be ejs (embedded java script)
+app.use(express.static('public')) // allows express to servce up any files in public folder as needed
+app.use(express.urlencoded({ extended: true })) // unsure
+app.use(express.json()) // allows express to use json
 
-app.get('/', async (req,res)=>{
-    const todoItems = await db.collection('todos').find().toArray()
-    const itemsLeft = await db.collection('todos').countDocuments({completed: false})
-    res.render('index.ejs', {zebra: todoItems, left: itemsLeft})
+app.get('/', async (req,res)=>{ // get request for homepage
+    const todoItems = await db.collection('todos').find().toArray() // sets variable todoItems to be the array of items from the database collection
+    const itemsLeft = await db.collection('todos').countDocuments({completed: false}) // sets variable itemsLeft to be the count of the items that have the property completed as false
+    res.render('index.ejs', {zebra: todoItems, left: itemsLeft}) // renders ejs, tells ejs what data to use
 })
 
 app.post('/createTodo', (req, res)=>{
