@@ -32,38 +32,38 @@ async function deleteTodo(){ // delete function
     }
 }
 
-async function markComplete(){
-    const todoText = this.parentNode.childNodes[1].innerText
+async function markComplete(){ // mark item as complete function 
+    const todoText = this.parentNode.childNodes[1].innerText // sets variable todoText to be the text of the item clicked
     try{
-        const response = await fetch('markComplete', {
-            method: 'put',
-            headers: {'Content-type': 'application/json'},
-            body: JSON.stringify({
-                'rainbowUnicorn': todoText
+        const response = await fetch('markComplete', { // sets response variable to contain the 'markComplete' fetch response
+            method: 'put', // sets fetch method to put
+            headers: {'Content-type': 'application/json'}, // sets fetch content to be json 
+            body: JSON.stringify({ // converts body to json 
+                'rainbowUnicorn': todoText // sets 'rainbowUnicorn' property of json to todoText variable
             })
         })
-        const data = await response.json()
-        console.log(data)
-        location.reload()
+        const data = await response.json() // sets data variable to be the json of response
+        console.log(data) // logs message
+        location.reload() // reload page
     }catch(err){
-        console.log(err)
+        console.log(err) // logs error message
     }
 }
 
-async function undo(){
-    const todoText = this.parentNode.childNodes[1].innerText
+async function undo(){ // function to undo (mark as not complete)
+    const todoText = this.parentNode.childNodes[1].innerText // sets todoText variable to be the text of the item clicked
     try{
-        const response = await fetch('undo', {
-            method: 'put',
-            headers: {'Content-type': 'application/json'},
-            body: JSON.stringify({
-                'rainbowUnicorn': todoText
+        const response = await fetch('undo', { // sets response variable to be the results of the fetch method 'undo'
+            method: 'put', // sets fetch method to put
+            headers: {'Content-type': 'application/json'}, // sets fetch content type to be json
+            body: JSON.stringify({ // converts body to json 
+                'rainbowUnicorn': todoText // sets 'rainbowUnicorn' json property to be the todoText variable
             })
         })
-        const data = await response.json()
-        console.log(data)
-        location.reload()
+        const data = await response.json() // sets data variable to be the json of response 
+        console.log(data) // logs message
+        location.reload() // reloads page
     }catch(err){
-        console.log(err)
+        console.log(err) // logs error
     }
 }
