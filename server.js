@@ -28,47 +28,47 @@ app.get('/', async (req,res)=>{ // get request for homepage
     res.render('index.ejs', {zebra: todoItems, left: itemsLeft}) // renders ejs, tells ejs what data to use
 })
 
-app.post('/createTodo', (req, res)=>{
-    db.collection('todos').insertOne({todo: req.body.todoItem, completed: false})
-    .then(result =>{
-        console.log('Todo has been added!')
-        res.redirect('/')
+app.post('/createTodo', (req, res)=>{ // post request to create a new item
+    db.collection('todos').insertOne({todo: req.body.todoItem, completed: false}) // goes to the collection called 'todos' and inserts a new item, the todo being the body of the request and completed being false
+    .then(result =>{ // after that
+        console.log('Todo has been added!') // log message
+        res.redirect('/') // refresh page by running the get 
     })
 })
 
-app.put('/markComplete', (req, res)=>{
-    db.collection('todos').updateOne({todo: req.body.rainbowUnicorn},{
+app.put('/markComplete', (req, res)=>{  // put request to change item 'completed' to true
+    db.collection('todos').updateOne({todo: req.body.rainbowUnicorn},{  // go to the database, find collections 'todos' update one item, by finding the todo with the property of the request body
         $set: {
-            completed: true
+            completed: true // set the completed property to true
         }
     })
     .then(result =>{
-        console.log('Marked Complete')
-        res.json('Marked Complete')
+        console.log('Marked Complete') // then log a message
+        res.json('Marked Complete') // then respond with the json message
     })
 })
 
-app.put('/undo', (req, res)=>{
-    db.collection('todos').updateOne({todo: req.body.rainbowUnicorn},{
+app.put('/undo', (req, res)=>{ // put request to mark item is not completed 
+    db.collection('todos').updateOne({todo: req.body.rainbowUnicorn},{ // finds the 'todo's collection in the database, updates one item that matches the request body
         $set: {
-            completed: false
+            completed: false  // sets the completed property to false
         }
     })
-    .then(result =>{
-        console.log('Marked Complete')
-        res.json('Marked Complete')
+    .then(result =>{ // after that is completed 
+        console.log('Marked Complete') // log a message
+        res.json('Marked Complete') // respond with json message
     })
 })
 
-app.delete('/deleteTodo', (req, res)=>{
-    db.collection('todos').deleteOne({todo:req.body.rainbowUnicorn})
+app.delete('/deleteTodo', (req, res)=>{ // request to delete an item 
+    db.collection('todos').deleteOne({todo:req.body.rainbowUnicorn}) // finds the 'todos' collection in the database, deletes one item that matches the request body 
     .then(result =>{
-        console.log('Deleted Todo')
-        res.json('Deleted It')
+        console.log('Deleted Todo') // then logs a message
+        res.json('Deleted It') // then returns json message
     })
     .catch( err => console.log(err))
 })
  
-app.listen(process.env.PORT || PORT, ()=>{
-    console.log('Server is running, you better catch it!')
+app.listen(process.env.PORT || PORT, ()=>{  // what port to listen for requests
+    console.log('Server is running, you better catch it!') //logs message when server starts
 })    
